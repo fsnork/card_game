@@ -1,29 +1,31 @@
-import java.util.Arrays;
-import java.util.List;
-
 public class Card {
 
-    private String nom;
-    private String suit;
-    private int value;
+    private final Nominal nom;
+    private final Suit suit;
+    private final int value;
 
-    public static List<String> nominals = Arrays.asList("6", "7", "8", "9", "10", "J", "Q", "K", "A");
-    public static List<String> suits = Arrays.asList("Hearts", "Spades", "Diamonds", "Clubs");
 
-    public Card(String nom, String suit) {
-        if (nominals.contains(nom) && suits.contains(suit)) {
-            this.nom = nom;
-            this.suit = suit;
-            this.value = 0;
-            if (nom.matches("^-?\\d+$")) {
-                this.value = Integer.parseInt(nom);
-            } else {
-                this.value = Value.valueOf(nom).getNumber();
-            }
-        }
+    public Card(Nominal nom, Suit suit) {
+        this.nom = nom;
+        this.suit = suit;
+        this.value = nom.getNumber();
     }
 
-    public enum Value {
+    public String getCardName() {
+        String first = (nom.getNumber() > 10) ? nom.toString() : Integer.toString(nom.getNumber());
+        return first + " " + suit.getWord();
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public enum Nominal {
+        SIX (6),
+        SEVEN (7),
+        EIGHT (8),
+        NINE (9),
+        TEN (10),
         J (11),
         Q (12),
         K (13),
@@ -31,7 +33,7 @@ public class Card {
 
         private final int number;
 
-        Value(int number) {
+        Nominal(int number) {
             this.number = number;
         }
 
@@ -40,12 +42,20 @@ public class Card {
         }
     }
 
-    public int getValue() {
-        return value;
-    }
+    public enum Suit {
+        H ("Hearts"),
+        S ("Spades"),
+        D ("Diamonds"),
+        C ("Clubs");
 
-    @Override
-    public String toString() {
-        return nom + " " + suit;
+        private final String word;
+
+        Suit(String word) {
+            this.word = word;
+        }
+
+        public String getWord() {
+            return word;
+        }
     }
 }

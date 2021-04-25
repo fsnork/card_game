@@ -7,8 +7,8 @@ public class Deck {
     List<Card> cards = new ArrayList<Card>();
 
     public Deck() {
-        for (String nom : Card.nominals) {
-            for (String suit : Card.suits) {
+        for (Card.Nominal nom : Card.Nominal.values()) {
+            for (Card.Suit suit : Card.Suit.values()) {
                 this.cards.add(new Card(nom, suit));
             }
         }
@@ -22,10 +22,9 @@ public class Deck {
         cards.clear();
     }
 
-    public void give(Player player1, Player player2) {
-        player1.currentCard = cards.get(0);
+    public Card getNextCard() {
+        Card nextCard = cards.get(0);
         cards.remove(0);
-        player2.currentCard = cards.get(0);
-        cards.remove(0);
+        return nextCard;
     }
 }
